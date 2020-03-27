@@ -86,7 +86,7 @@ gulp.task('wxs', () => {
 // wxss task 把px转为rpx，把webfont转换为 base64格式
 gulp.task('wxss', () => {
 	const combined = combiner.obj([
-		gulp.src(`${src}/**/*.{exss,scss}`),
+		gulp.src(`${src}/**/*.{wxss,scss}`),
 		sass().on('error', sass.logError),
 		postcss([ pxtorpx(), base64() ]),
 
