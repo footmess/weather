@@ -6,7 +6,6 @@ const del = require('del');
 const through = require('through2');
 const colors = require('ansi-colors');
 const log = require('fancy-log');
-const argv = require('minimist')(process.argv.slice(2));
 
 const postcss = require('gulp-postcss');
 const pxtorpx = require('postcss-px2rpx');
@@ -31,14 +30,9 @@ const jdists = require('gulp-jdists');
 const src = './src';
 const dist = './dist';
 // 判断 gulp --type prod 命名 type 是否是生产打包
-const isProd = argv.type === 'prod';
+const isProd = process.env.Node_ENV === 'production' || false;
 
 // Gulp 是以 task 为核心的打包工具，针对不同的文件类型（比如通过正则过滤）可以配置不同的流程控制 pipe 管道流
-function defaultTask(cb) {
-	// place code for your default task here
-	cb();
-}
-
 // 报错信息处理
 const handleError = (err) => {
 	console.log('\n');

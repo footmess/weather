@@ -1,0 +1,22 @@
+module.exports = {
+	//湿度处理
+	humidity: function(h) {
+		if (h) {
+			return `湿度 ${h}%`;
+		}
+		return h;
+	},
+
+	//根据风的code和风力输出文本
+	wind: function(code, level) {
+		if (!code) {
+			return '无风';
+		}
+		if (level) {
+			level = level.toString().split('-');
+			level = level[level.length - 1];
+			return `${code} ${level}级`;
+		}
+		return code;
+	}
+};

@@ -1,0 +1,57 @@
+/**index.scss**/
+// scss变量 定义container的间隔
+//1px=2rpx
+$grid-margin: 20rpx;
+.container {
+	margin-bottom: $grid-margin;
+	max-width: 750rpx;
+	box-sizing: border-box;
+	color: #fff;
+}
+
+//scss 混入
+@mixin flex-row {
+	display: flex;
+	flex-direction: row;
+}
+@mixin flex-colum {
+	display: flex;
+	flex-direction: column;
+}
+.two-day {
+	@include flex-row;
+	.item {
+		display: block;
+		//等价于 flex-grow:1;flex-shrink:1;flex-basis:0%;
+		flex: 1;
+		padding-right: 16rpx;
+		margin: 0 16rpx 0 0;
+		border-right: 2rpx solid rgba(255, 255, 255, 0.4);
+	}
+}
+.hourly {
+	.scrollX {
+		position: relative;
+		// 8*116
+		width: 928rpx;
+		padding: 40rpx 0;
+		height: 150rpx;
+	}
+	.item {
+		@include flex-colum;
+		width: 116rpx;
+	}
+}
+.life-style {
+	@include flex-row;
+	flex-wrap: wrap;
+	.item {
+		text-align: center;
+		width: 25%;
+		height: 188rpx;
+		border-right: 2rpx solid rgba(255, 255, 255, 0.1);
+		border-bottom: 2rpx solid rgba(255, 255, 255, 0.1);
+		box-sizing: border-box;
+		padding: 50rpx 0 0;
+	}
+}

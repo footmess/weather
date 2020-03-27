@@ -12,6 +12,7 @@
 		"autoAudits": false,
 		"coverView": true
 	},
+	"cloudfunctionRoot": "./cloud-functions/",
 	"compileType": "miniprogram",
 	"libVersion": "2.9.4",
 	"appid": "wx1fc7fcea778347cb",

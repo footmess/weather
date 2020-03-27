@@ -1,13 +1,108 @@
 <!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bind:getuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+<!-- 小程序不支持复杂的表达式，目前支持简单的三元、加减和逻辑判断，如果要使用形如 {{parseInt(num)}} 的函数调用语法，需要 WXS 支持 -->
+<wxs src="./index.wxs" module="utils"></wxs>
+<view class="wrapper" style="background: url({{backgroundImage}}) center -178rpx / 100% no-repeat {{backgroundColor}}">
+  <view class="container" id="canvas-wrapper" style="padding-top:{{paddingTop}}px">
+    <view class="now">
+      <!-- 当前实时天气和空气质量 -->
+      <view class="location" bind:tap='chooseLocation'>
+        <icon type="dingwei"></icon>
+        <text>{{address}}</text>
+      </view>
+      <view class="air-quality" wx:if="{{air.aqi}}">
+        <text class="circle" style="background:{{air.color}}"></text>
+        <text class="value">{{air.name}} {{air.aqi}}</text>
+      </view>
+      <view class="now-weather">
+        <view class="temp">
+          <text>{{current.temp}}</text>
+          <text class="degree">°</text>
+        </view>
+        <view class="cur-weather">
+          <view class="inline">
+            <icon type="{{current.icon}}"></icon>
+            <text>{{current.weather}}</text>
+          </view>
+          <view class="inline today">
+            <text class="item">{{utils.humidity(current.humidity)}}</text>
+            <text class="item">{{utils.wind(current.wind,current.windLevel)}}</text>
+          </view>
+        </view>
+        <view class="tips" wx:if="{{tips}}">
+          <text>{{tips}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="two-day">
+      <!-- 今明两天天气 -->
+      <view class="item">
+        <view class="top">
+          <text class="date">今天</text>
+          <text class="temp">{{today.temp}}</text>
+        </view>
+        <view class="bottom">
+          <text>{{today.weather}}</text>
+          <icon class="logo" type="{{today.icon}}"></icon>
+        </view>
+      </view>
+      <view class="item">
+        <text class="date">明天</text>
+          <text class="temp">{{tomorrow.temp}}</text>
+        </view>
+        <view class="bottom">
+          <text>{{tomorrow.weather}}</text>
+          <icon class="logo" type="{{tomorrow.icon}}"></icon>
+        </view>
+      </view>
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class="weahter" style="background-color:{{backgroundColor}}">
+    <view class="container">
+      <!-- 24小时天气 -->
+      <scroll-view class="hourly" scroll-x="{{true}}">
+        <view class="scrollX">
+          <view class="item" wx:for="{{hourlyData}}">
+            <text class="time">{{item.hour}}</text>
+            <icon class="icon" type="{{item.icon}}"></icon>
+            <text class="temp">{{item.temp}}°</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="container">
+      <view class="week">
+        <!-- 七天天气 -->
+        <view class="wekk-weather">
+          <view class="item" wx:for="{{weeklyData}}">
+            <view class="day">{{utils.formatWeeklyDate(index)}}</view>
+            <view class="date">{{utils.formatDate(item.time)}}</view>
+            <view class="dattime">
+              <view class="wt">{{item.day}}</view>
+              <icon class="img" type="{{item.dayIcon}}"></icon>
+            </view>
+            <view class="night">
+              <icon class="img" type="{{item.nightIcon}}"></icon>
+              <view class="wt">{{item.night}}</view>
+            </view>
+            <view class="wind">{{utils.wind(item.nightWind)}}</view>
+            <view class="wind" wx:if="{{item.nightWind}}">{{utils.windLevel(item.nightWindLevel)}}</view>
+            <view class="wind" wx:else></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="container">
+      <view class="life-style">
+        <!-- 生活指数 -->
+        <!-- 小程序内的事件绑定都是在 WXML 中实现的，所以传递参数只能通过 WXML 上面的属性值来传递  事件传递参数 -->
+        <view class="item" wx:for="{{lifeStyle}}" data-name="{{item.name}}" data-detail="{{item.detail}}" bind:tap="indexDetail">
+          <view class="title">
+            <icon type="{{item.icon}}"></icon>
+            {{item.name}}
+          </view>
+          <view class="content">{{item.info}}</view>
+        </view>
+      </view>
+    </view>
   </view>
 </view>
